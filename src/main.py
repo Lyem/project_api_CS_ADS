@@ -14,6 +14,14 @@ def cadastrarempresa():
 def loginempresa():
     return ""
 
+@app.route('/cadastrar/cli')
+def cadastrarcli():
+    return ""
+
+@app.route('/login/cli')
+def logincli():
+    return ""
+
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
