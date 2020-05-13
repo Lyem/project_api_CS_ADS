@@ -29,6 +29,12 @@ class EmpresaConf(Base):
     empresa_id = Column(Integer, ForeignKey('empresa.id'))
     empresa = relationship('Empresa')
 
+class Clientconf(Base):
+    __tablename__='clientconf'
+    id = Column(Integer, primary_key=True)
+    clientes_id = Column(Integer, ForeignKey('clientes.id'))
+    clientes = relationship('clientes')
+
 def init_db():
     Base.metadata.create_all(bind=engine)
 
