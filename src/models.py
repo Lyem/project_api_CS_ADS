@@ -34,7 +34,21 @@ class Empresa(Base):
 class Servicos(Base):
     __tablename__='servico'
     id = Column(Integer, primary_key=True)
-    servico = Column(String, index=True)
+    nome = Column(String, index=True)
+    preco = Column(String, index=True)
+    empresa_id = Column(Integer, ForeignKey('empresa.id'))
+    empresa = relationship("Empresa")
+
+    def __repr__(self):
+        return '<Servicos {}>'.format(self.nome)
+
+    def save(self):
+        db_session.add(self)
+        db_session.commit()
+
+    def delete(self):
+        db_session.delete(self)
+        db_session.commit()
 
 def init_db():
     Base.metadata.create_all(bind=engine)

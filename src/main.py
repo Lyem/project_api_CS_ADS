@@ -1,14 +1,14 @@
 import os
 from flask import Flask, request
 from flask_restful import Resource, Api
-from models import Empresa
+from models import Empresa, Servicos
 
 app = Flask(__name__)
 api = Api(app)
 
 class On(Resource):
     def get(self):
-        return 'ta on'
+        return {'status':'online'}
 
 class Empresa_infos(Resource):
     def get(self, nome):
@@ -65,9 +65,18 @@ class Empresas(Resource):
                 'mensagem': AttributeError
             }
 
+class Servico(Resource):
+    def post(self):
+        dados = request.json
+        empresa = Empresa.query.filter_by(nome=dados['empresa']).first()
+        servico = Servicos(nome=dados['servico'],preco=dados['preco'], empresa=empresa)
+        servico.save()
+        return {'status':'sucesso'}
+
 api.add_resource(On, '/')
 api.add_resource(Empresa_infos, '/empresa/<string:nome>/')
 api.add_resource(Empresas, '/empresas/')
+api.add_resource(Servico, '/servicos/')
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
