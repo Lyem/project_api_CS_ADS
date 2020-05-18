@@ -12,28 +12,29 @@ Base.query = db_session.query_property()
 class Empresa(Base):
     __tablename__='empresa'
     id = Column(Integer, primary_key=True)
-    email = Column(String, index=True)
+    usuario = Column(String, index=True)
     senha = Column(String)
-    nome = Column(String)
+    nome = Column(String, index=True)
+    numero = Column(String)
+    telefone = Column(String)
+    cidade = Column(String)
+    uf = Column(String)
 
-class Clientes(Base):
-    __tablename__='clientes'
-    id = Column(Integer, primary_key=True)
-    email = Column(String, index=True)
-    senha = Column(String)
-    nome = Column(String)
+    def __repr__(self):
+        return '<Empresa {}>'.format(self.nome)
 
-class EmpresaConf(Base):
-    __tablename__='empresaconf'
-    id = Column(Integer, primary_key=True)
-    empresa_id = Column(Integer, ForeignKey('empresa.id'))
-    empresa = relationship('Empresa')
+    def save(self):
+        db_session.add(self)
+        db_session.commit()
 
-class Clientconf(Base):
-    __tablename__='clientconf'
+    def delete(self):
+        db_session.delete(self)
+        db_session.commit()
+
+class Servicos(Base):
+    __tablename__='servico'
     id = Column(Integer, primary_key=True)
-    clientes_id = Column(Integer, ForeignKey('clientes.id'))
-    clientes = relationship('clientes')
+    servico = Column(String, index=True)
 
 def init_db():
     Base.metadata.create_all(bind=engine)

@@ -1,26 +1,73 @@
 import os
-from flask import Flask
+from flask import Flask, request
+from flask_restful import Resource, Api
+from models import Empresa
+
 app = Flask(__name__)
+api = Api(app)
 
-@app.route('/')
-def on():
-    return "Ta on!!"
+class On(Resource):
+    def get(self):
+        return 'ta on'
 
-@app.route('/cadastrar/empresa')
-def cadastrarempresa():
-    return ""
+class Empresa_infos(Resource):
+    def get(self, nome):
+        empresa = Empresa.query.filter_by(nome=nome).first()
+        try:
+            response = {
+                'nome':empresa.nome,
+                'id':empresa.id,
+                'cidade':empresa.cidade
+            }
+            return response
+        except AttributeError:
+            return {
+                'status':'error',
+                'mensagem':'empresa não emcontrada'
+            }
+    def put(self, nome):
+        empresa = Empresa.query.filter_by(nome=nome).first()
+        dados = request.json
+        try:
+            empresa.nome = dados['nome']
+            empresa.usuario = dados['usuario']
+            empresa.senha = dados['senha']
+            empresa.numero = dados['numero']
+            empresa.telefone = dados['telefone']
+            empresa.cidade = dados['cidade']
+            empresa.uf = dados['uf']
+            empresa.save()
+            return {'status':'sucesso'}
+        except AttributeError:
+            return{'status':'error','mensagem':AttributeError}
+    def delete(self, nome):
+        try:
+            empresa = Empresa.query.filter_by(nome=nome).first()
+            empresa.delete()
+            return{'status':'sucesso'}
+        except AttributeError:
+            return{'status':'error','menssagem':AttributeError}
 
-@app.route('/login/empresa')
-def loginempresa():
-    return ""
+class Empresas(Resource):
+    def get(self):
+        empresa = Empresa.query.all()
+        response = [{'nome':i.nome} for i in empresa]
+        return response
+    def post(self):
+        dados = request.json
+        try:
+            empresa = Empresa(usuario=dados['usuario'], senha=dados['senha'],nome=dados['nome'],numero=dados['numero'],telefone=dados['telefone'],cidade=dados['cidade'],uf=dados['uf'])
+            empresa.save()
+            return {'status':'sucesso'}
+        except AttributeError:
+            return{
+                'status':'error',
+                'mensagem': AttributeError
+            }
 
-@app.route('/cadastrar/cli')
-def cadastrarcli():
-    return ""
-
-@app.route('/login/cli')
-def logincli():
-    return ""
+api.add_resource(On, '/')
+api.add_resource(Empresa_infos, '/empresa/<string:nome>/')
+api.add_resource(Empresas, '/empresas/')
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
