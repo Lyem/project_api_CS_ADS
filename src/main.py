@@ -33,6 +33,8 @@ class Empresa_infos(Resource):
             empresa.usuario = dados['usuario']
             empresa.senha = dados['senha']
             empresa.numero = dados['numero']
+            empresa.endereco = dados['endereco']
+            empresa.bairro = dados['bairro']
             empresa.telefone = dados['telefone']
             empresa.cidade = dados['cidade']
             empresa.uf = dados['uf']
@@ -56,7 +58,7 @@ class Empresas(Resource):
     def post(self):
         dados = request.json
         try:
-            empresa = Empresa(usuario=dados['usuario'], senha=dados['senha'],nome=dados['nome'],numero=dados['numero'],telefone=dados['telefone'],cidade=dados['cidade'],uf=dados['uf'])
+            empresa = Empresa(usuario=dados['usuario'], senha=dados['senha'],nome=dados['nome'],numero=dados['numero'],endereco=dados['endereco'],bairro=dados['bairro'],telefone=dados['telefone'],cidade=dados['cidade'],uf=dados['uf'])
             empresa.save()
             return {'status':'sucesso'}
         except AttributeError:

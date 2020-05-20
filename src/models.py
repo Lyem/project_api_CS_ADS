@@ -16,6 +16,8 @@ class Empresa(Base):
     senha = Column(String)
     nome = Column(String, index=True)
     numero = Column(String)
+    endereco = Column(String)
+    bairro = Column(String)
     telefone = Column(String)
     cidade = Column(String)
     uf = Column(String)
