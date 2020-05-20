@@ -12,12 +12,19 @@ class On(Resource):
 
 class Empresa_infos(Resource):
     def get(self, nome):
-        empresa = Empresa.query.filter_by(nome=nome).first()
+        empresa = Empresa.query.filter_by(usuario=nome).first()
         try:
             response = {
                 'nome':empresa.nome,
                 'id':empresa.id,
-                'cidade':empresa.cidade
+                'cidade':empresa.cidade,
+                'usuario':empresa.usuario,
+                'senha':empresa.senha,
+                'numero':empresa.numero,
+                'endereco':empresa.endereco,
+                'bairro':empresa.bairro,
+                'telefone':empresa.telefone,
+                'uf':empresa.uf
             }
             return response
         except AttributeError:
