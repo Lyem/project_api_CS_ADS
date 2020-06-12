@@ -10,10 +10,10 @@ class server():
 
     def conect(self):
         conexao = pymysql.connect(
-        host = 'sql10.freemysqlhosting.net',
-        user = 'sql10343231',
-        passwd = 'zdDyscJ4Fd',
-        database= 'sql10343231'
+            host='',
+            user='',
+            passwd='',
+            database=''
         )
         return conexao
 
