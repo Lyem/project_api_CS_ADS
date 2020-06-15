@@ -21,6 +21,19 @@ class On(Resource):
     def get(self):
         return {'status':'online'}
 
+class LoginE(Resource):
+    def post(self):
+        dados = request.json
+        usuario = dados['usuario']
+        senha = dados['senha']
+        c = server.conect(self)
+        cursor = c.cursor()
+        v = cursor.execute("select count(*) from users where usuario ='"+ usuario +"' and senha ='"+ senha +"'")
+        if (v == 1):
+            return {'status':'sim'}
+        else:
+            return {'status':'nao'}
+
 class Empresas(Resource):
     def get(self):
         c = server.conect(self)
@@ -309,6 +322,7 @@ api.add_resource(Empresa_infos, '/empresa/<string:nome>/')
 api.add_resource(Empresas, '/empresas/')
 api.add_resource(Clientes, '/clientes/')
 api.add_resource(Clientes_infos, '/cliente/<string:nome>/')
+api.add_resource(LoginE, '/empresa/login/')
 
 if __name__ == '__main__':
     #port = int(os.environ.get("PORT", 5000))
