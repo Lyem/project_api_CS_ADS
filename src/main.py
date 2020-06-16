@@ -28,8 +28,14 @@ class LoginE(Resource):
         senha = dados['senha']
         c = server.conect(self)
         cursor = c.cursor()
-        v = cursor.execute("select count(*) from users where usuario ='"+ usuario +"' and senha ='"+ senha +"'")
-        if (v == 1):
+        cursor.execute("select count(*) from empresa where usuario ='"+ usuario +"' and senha ='"+ senha +"'")
+        v = cursor.fetchall()
+        v = str(v)
+        v = v.replace("(", "")
+        v = v.replace(")", "")
+        v = v.replace(",", "")
+        v = v.replace("'", "")
+        if (v == "1"):
             return {'status':'sim'}
         else:
             return {'status':'nao'}
@@ -325,6 +331,6 @@ api.add_resource(Clientes_infos, '/cliente/<string:nome>/')
 api.add_resource(LoginE, '/empresa/login/')
 
 if __name__ == '__main__':
-    #port = int(os.environ.get("PORT", 5000))
-    #app.run(host='0.0.0.0', port=port)
-    app.run()
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
+    #app.run()
