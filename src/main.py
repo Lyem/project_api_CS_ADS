@@ -21,6 +21,25 @@ class On(Resource):
     def get(self):
         return {'status':'online'}
 
+class LoginC(Resource):
+    def post(self):
+        dados = request.json
+        usuario = dados['usuario']
+        senha = dados['senha']
+        c = server.conect(self)
+        cursor = c.cursor()
+        cursor.execute("select count(*) from clientes where usuario ='"+ usuario +"' and senha ='"+ senha +"'")
+        v = cursor.fetchall()
+        v = str(v)
+        v = v.replace("(", "")
+        v = v.replace(")", "")
+        v = v.replace(",", "")
+        v = v.replace("'", "")
+        if (v == "1"):
+            return {'status':'sim'}
+        else:
+            return {'status':'nao'}
+
 class LoginE(Resource):
     def post(self):
         dados = request.json
@@ -84,20 +103,6 @@ class Empresa_infos(Resource):
         try:
             c = server.conect(self)
             cursor = c.cursor()
-            cursor.execute("SELECT senha FROM empresa WHERE usuario = '" + nome + "'")
-            senha = cursor.fetchall()
-            senha = str(senha)
-            senha = senha.replace("(", "")
-            senha = senha.replace(")", "")
-            senha = senha.replace(",", "")
-            senha = senha.replace("'", "")
-            cursor.execute("SELECT usuario FROM empresa WHERE usuario = '" + nome + "'")
-            user = cursor.fetchall()
-            user = str(user)
-            user = user.replace("(", "")
-            user = user.replace(")", "")
-            user = user.replace(",", "")
-            user = user.replace("'", "")
             cursor.execute("SELECT nome FROM empresa WHERE usuario = '" + nome + "'")
             name = cursor.fetchall()
             name = str(name)
@@ -172,8 +177,6 @@ class Empresa_infos(Resource):
             response = {
                 'nome':name,
                 'cidade':cit,
-                'usuario':user,
-                'senha':senha,
                 'numero':numero,
                 'endereco':endereco,
                 'bairro':bairro,
@@ -329,6 +332,7 @@ api.add_resource(Empresas, '/empresas/')
 api.add_resource(Clientes, '/clientes/')
 api.add_resource(Clientes_infos, '/cliente/<string:nome>/')
 api.add_resource(LoginE, '/empresa/login/')
+api.add_resource(LoginC, '/cliente/login/')
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
