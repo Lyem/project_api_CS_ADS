@@ -173,7 +173,7 @@ class EmpresaPostandPut(Resource):
         v = v.replace(",", "")
         v = v.replace("'", "")
         if (v == "1"):
-            cursor.execute("UPDATE empresa SET usuario = '"+ usuario +"', senha = '"+ senha +"' nome = '"+ nome +"' numero = '"+ numero +"' endereco = '"+ endereco +"' bairro = '"+ bairro +"' telefone = '"+ telefone +"' cidade = '"+ cidade +"' uf = '"+ uf +"' credito = '"+ credito +"' debito = '"+ debito +"' denheiro = '"+ dinheiro +"' where usuario ='"+ usuario +"'")
+            cursor.execute("UPDATE empresa SET usuario = '"+ usuario +"', senha = '"+ senha +"', nome = '"+ nome +"', numero = '"+ numero +"', endereco = '"+ endereco +"', bairro = '"+ bairro +"', telefone = '"+ telefone +"', cidade = '"+ cidade +"', uf = '"+ uf +"', credito = '"+ credito +"', debito = '"+ debito +"', dinheiro = '"+ dinheiro +"' where usuario ='"+ usuario +"'")
             return {'status': 'sucesso'}
         else:
             return {'status': 'falha'}
@@ -349,6 +349,6 @@ api.add_resource(EmpresaPostandPut, '/empresaget/')
 api.add_resource(LoginC, '/cliente/login/')
 
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
-    #app.run()
+    #port = int(os.environ.get("PORT", 5000))
+    #app.run(host='0.0.0.0', port=port)
+    app.run()
