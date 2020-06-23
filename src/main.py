@@ -40,25 +40,6 @@ class LoginC(Resource):
         else:
             return {'status':'nao'}
 
-class LoginE(Resource):
-    def post(self):
-        dados = request.json
-        usuario = dados['usuario']
-        senha = dados['senha']
-        c = server.conect(self)
-        cursor = c.cursor()
-        cursor.execute("select count(*) from empresa where usuario ='"+ usuario +"' and senha ='"+ senha +"'")
-        v = cursor.fetchall()
-        v = str(v)
-        v = v.replace("(", "")
-        v = v.replace(")", "")
-        v = v.replace(",", "")
-        v = v.replace("'", "")
-        if (v == "1"):
-            return {'status':'sim'}
-        else:
-            return {'status':'nao'}
-
 class EmpresaPostandPut(Resource):
     def post(self):
         dados = request.json
@@ -162,11 +143,40 @@ class EmpresaPostandPut(Resource):
                 'credito': credito,
                 'usuario': user,
                 'debito': debito,
-                'dinheiro': dinheiro
+                'dinheiro': dinheiro,
+                'status': 'sim'
             }
             return response
         else:
-            return {'nome': 'nao'}
+            return {'status':'nao'}
+    def put(self):
+        dados = request.json
+        usuario = dados['usuario']
+        senha = dados['senha']
+        nome = dados['nome']
+        numero = dados['numero']
+        endereco = dados['endereco']
+        bairro = dados['bairro']
+        telefone = dados['telefone']
+        cidade = dados['cidade']
+        uf = dados['uf']
+        credito = dados['credito']
+        debito = dados['debito']
+        dinheiro = dados['dinheiro']
+        c = server.conect(self)
+        cursor = c.cursor()
+        cursor.execute("select count(*) from empresa where usuario ='" + usuario + "' and senha ='" + senha + "'")
+        v = cursor.fetchall()
+        v = str(v)
+        v = v.replace("(", "")
+        v = v.replace(")", "")
+        v = v.replace(",", "")
+        v = v.replace("'", "")
+        if (v == "1"):
+            cursor.execute("UPDATE empresa SET usuario = '"+ usuario +"', senha = '"+ senha +"' nome = '"+ nome +"' numero = '"+ numero +"' endereco = '"+ endereco +"' bairro = '"+ bairro +"' telefone = '"+ telefone +"' cidade = '"+ cidade +"' uf = '"+ uf +"' credito = '"+ credito +"' debito = '"+ debito +"' denheiro = '"+ dinheiro +"' where usuario ='"+ usuario +"'")
+            return {'status': 'sucesso'}
+        else:
+            return {'status': 'falha'}
 
 class Empresas(Resource):
     def get(self, i=None):
@@ -302,114 +312,6 @@ class Empresa_infos(Resource):
             return response
         except AttributeError:
             return{'status':'error','menssagem':AttributeError}
-    #def put(self, nome):
-        #empresa = Empresa.query.filter_by(nome=nome).first()
-        #dados = request.json
-       # try:
-          #  empresa.nome = dados['nome']
-         #   empresa.usuario = dados['usuario']
-        #    empresa.senha = dados['senha']
-       #     empresa.numero = dados['numero']
-            #empresa.endereco = dados['endereco']
-           # empresa.bairro = dados['bairro']
-          #  empresa.telefone = dados['telefone']
-         #   empresa.cidade = dados['cidade']
-        #    empresa.uf = dados['uf']
-       #     empresa.save()
-      #      return {'status':'sucesso'}
-     #   except AttributeError:
-    #        return{'status':'error','mensagem':AttributeError}
-   # def delete(self, nome):
-      #  try:
-     #       empresa = Empresa.query.filter_by(nome=nome).first()
-    #        empresa.delete()
-   #         return{'status':'sucesso'}
-  #      except AttributeError:
- #           return{'status':'error','menssagem':AttributeError}
-
-class Clientes_infos(Resource):
-    def get(self, nome):
-        try:
-            c = server.conect(self)
-            cursor = c.cursor()
-            cursor.execute("SELECT senha FROM clientes WHERE usuario = '" + nome + "'")
-            senha = cursor.fetchall()
-            senha = str(senha)
-            senha = senha.replace("(", "")
-            senha = senha.replace(")", "")
-            senha = senha.replace(",", "")
-            senha = senha.replace("'", "")
-            cursor.execute("SELECT usuario FROM clientes WHERE usuario = '" + nome + "'")
-            user = cursor.fetchall()
-            user = str(user)
-            user = user.replace("(", "")
-            user = user.replace(")", "")
-            user = user.replace(",", "")
-            user = user.replace("'", "")
-            cursor.execute("SELECT nome FROM clientes WHERE usuario = '" + nome + "'")
-            name = cursor.fetchall()
-            name = str(name)
-            name = name.replace("(", "")
-            name = name.replace(")", "")
-            name = name.replace(",", "")
-            name = name.replace("'", "")
-            cursor.execute("SELECT cidade FROM clientes WHERE usuario = '" + nome + "'")
-            cit = cursor.fetchall()
-            cit = str(cit)
-            cit = cit.replace("(", "")
-            cit = cit.replace(")", "")
-            cit = cit.replace(",", "")
-            cit = cit.replace("'", "")
-            cursor.execute("SELECT numero FROM clientes WHERE usuario = '" + nome + "'")
-            numero = cursor.fetchall()
-            numero = str(numero)
-            numero = numero.replace("(", "")
-            numero = numero.replace(")", "")
-            numero = numero.replace(",", "")
-            numero = numero.replace("'", "")
-            cursor.execute("SELECT endereco FROM clientes WHERE usuario = '" + nome + "'")
-            endereco = cursor.fetchall()
-            endereco = str(endereco)
-            endereco = endereco.replace("(", "")
-            endereco = endereco.replace(")", "")
-            endereco = endereco.replace(",", "")
-            endereco = endereco.replace("'", "")
-            cursor.execute("SELECT bairro FROM clientes WHERE usuario = '" + nome + "'")
-            bairro = cursor.fetchall()
-            bairro = str(bairro)
-            bairro = bairro.replace("(", "")
-            bairro = bairro.replace(")", "")
-            bairro = bairro.replace(",", "")
-            bairro = bairro.replace("'", "")
-            cursor.execute("SELECT telefone FROM clientes WHERE usuario = '" + nome + "'")
-            telefone = cursor.fetchall()
-            telefone = str(telefone)
-            telefone = telefone.replace("(", "")
-            telefone = telefone.replace(")", "")
-            telefone = telefone.replace(",", "")
-            telefone = telefone.replace("'", "")
-            cursor.execute("SELECT uf FROM clientes WHERE usuario = '" + nome + "'")
-            uf = cursor.fetchall()
-            uf = str(uf)
-            uf = uf.replace("(", "")
-            uf = uf.replace(")", "")
-            uf = uf.replace(",", "")
-            uf = uf.replace("'", "")
-
-            response = {
-                'nome':name,
-                'cidade':cit,
-                'usuario':user,
-                'senha':senha,
-                'numero':numero,
-                'endereco':endereco,
-                'bairro':bairro,
-                'telefone':telefone,
-                'uf':uf,
-            }
-            return response
-        except AttributeError:
-            return{'status':'error','menssagem':AttributeError}
 
 class Clientes(Resource):
 
@@ -443,9 +345,7 @@ api.add_resource(On, '/')
 api.add_resource(Empresa_infos, '/empresa/<string:nome>/')
 api.add_resource(Empresas, '/empresas/')
 api.add_resource(Clientes, '/clientes/')
-api.add_resource(Clientes_infos, '/cliente/<string:nome>/')
 api.add_resource(EmpresaPostandPut, '/empresaget/')
-api.add_resource(LoginE, '/empresa/login/')
 api.add_resource(LoginC, '/cliente/login/')
 
 if __name__ == '__main__':
