@@ -59,15 +59,128 @@ class LoginE(Resource):
         else:
             return {'status':'nao'}
 
+class EmpresaPostandPut(Resource):
+    def post(self):
+        dados = request.json
+        usuario = dados['usuario']
+        senha = dados['senha']
+        c = server.conect(self)
+        cursor = c.cursor()
+        cursor.execute("select count(*) from empresa where usuario ='" + usuario + "' and senha ='" + senha + "'")
+        v = cursor.fetchall()
+        v = str(v)
+        v = v.replace("(", "")
+        v = v.replace(")", "")
+        v = v.replace(",", "")
+        v = v.replace("'", "")
+        if (v == "1"):
+            cursor.execute("SELECT nome FROM empresa WHERE usuario = '" + usuario + "'")
+            name = cursor.fetchall()
+            name = str(name)
+            name = name.replace("(", "")
+            name = name.replace(")", "")
+            name = name.replace(",", "")
+            name = name.replace("'", "")
+            cursor.execute("SELECT cidade FROM empresa WHERE usuario = '" + usuario + "'")
+            cit = cursor.fetchall()
+            cit = str(cit)
+            cit = cit.replace("(", "")
+            cit = cit.replace(")", "")
+            cit = cit.replace(",", "")
+            cit = cit.replace("'", "")
+            cursor.execute("SELECT numero FROM empresa WHERE usuario = '" + usuario + "'")
+            numero = cursor.fetchall()
+            numero = str(numero)
+            numero = numero.replace("(", "")
+            numero = numero.replace(")", "")
+            numero = numero.replace(",", "")
+            numero = numero.replace("'", "")
+            cursor.execute("SELECT endereco FROM empresa WHERE usuario = '" + usuario + "'")
+            endereco = cursor.fetchall()
+            endereco = str(endereco)
+            endereco = endereco.replace("(", "")
+            endereco = endereco.replace(")", "")
+            endereco = endereco.replace(",", "")
+            endereco = endereco.replace("'", "")
+            cursor.execute("SELECT bairro FROM empresa WHERE usuario = '" + usuario + "'")
+            bairro = cursor.fetchall()
+            bairro = str(bairro)
+            bairro = bairro.replace("(", "")
+            bairro = bairro.replace(")", "")
+            bairro = bairro.replace(",", "")
+            bairro = bairro.replace("'", "")
+            cursor.execute("SELECT telefone FROM empresa WHERE usuario = '" + usuario + "'")
+            telefone = cursor.fetchall()
+            telefone = str(telefone)
+            telefone = telefone.replace("(", "")
+            telefone = telefone.replace(")", "")
+            telefone = telefone.replace(",", "")
+            telefone = telefone.replace("'", "")
+            cursor.execute("SELECT uf FROM empresa WHERE usuario = '" + usuario + "'")
+            uf = cursor.fetchall()
+            uf = str(uf)
+            uf = uf.replace("(", "")
+            uf = uf.replace(")", "")
+            uf = uf.replace(",", "")
+            uf = uf.replace("'", "")
+            cursor.execute("SELECT credito FROM empresa WHERE usuario = '" + usuario + "'")
+            credito = cursor.fetchall()
+            credito = str(credito)
+            credito = credito.replace("(", "")
+            credito = credito.replace(")", "")
+            credito = credito.replace(",", "")
+            credito = credito.replace("'", "")
+            cursor.execute("SELECT debito FROM empresa WHERE usuario = '" + usuario + "'")
+            debito = cursor.fetchall()
+            debito = str(debito)
+            debito = debito.replace("(", "")
+            debito = debito.replace(")", "")
+            debito = debito.replace(",", "")
+            debito = debito.replace("'", "")
+            cursor.execute("SELECT dinheiro FROM empresa WHERE usuario = '" + usuario + "'")
+            dinheiro = cursor.fetchall()
+            dinheiro = str(dinheiro)
+            dinheiro = dinheiro.replace("(", "")
+            dinheiro = dinheiro.replace(")", "")
+            dinheiro = dinheiro.replace(",", "")
+            dinheiro = dinheiro.replace("'", "")
+            cursor.execute("SELECT usuario FROM empresa WHERE usuario = '" + usuario + "'")
+            user = cursor.fetchall()
+            user = str(user)
+            user = user.replace("(", "")
+            user = user.replace(")", "")
+            user = user.replace(",", "")
+            user = user.replace("'", "")
+            response = {
+                'nome': name,
+                'cidade': cit,
+                'numero': numero,
+                'endereco': endereco,
+                'bairro': bairro,
+                'telefone': telefone,
+                'uf': uf,
+                'credito': credito,
+                'usuario': user,
+                'debito': debito,
+                'dinheiro': dinheiro
+            }
+            return response
+        else:
+            return {'nome': 'nao'}
+
 class Empresas(Resource):
-    def get(self):
+    def get(self, i=None):
         c = server.conect(self)
         cursor = c.cursor()
         cursor.execute('SELECT nome FROM empresa')
         resultado = cursor.fetchall()
-        re = [{'nome': str(i)} for i in resultado]
-
-        return re
+        #re = [{'nome': str(i)} for i in resultado]
+        v = str(resultado)
+        v = v.replace("(", "")
+        v = v.replace(")", "")
+        v = v.replace(",", "")
+        v = v.replace("'", "")
+        return v
 
     def post(self):
         dados = request.json
@@ -331,6 +444,7 @@ api.add_resource(Empresa_infos, '/empresa/<string:nome>/')
 api.add_resource(Empresas, '/empresas/')
 api.add_resource(Clientes, '/clientes/')
 api.add_resource(Clientes_infos, '/cliente/<string:nome>/')
+api.add_resource(EmpresaPostandPut, '/empresaget/')
 api.add_resource(LoginE, '/empresa/login/')
 api.add_resource(LoginC, '/cliente/login/')
 
