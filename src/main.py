@@ -153,6 +153,8 @@ class EmpresaPostandPut(Resource):
         dados = request.json
         usuario = dados['usuario']
         senha = dados['senha']
+        usuariov = dados['uv']
+        senhav = dados['sv']
         nome = dados['nome']
         numero = dados['numero']
         endereco = dados['endereco']
@@ -165,18 +167,10 @@ class EmpresaPostandPut(Resource):
         dinheiro = dados['dinheiro']
         c = server.conect(self)
         cursor = c.cursor()
-        cursor.execute("select count(*) from empresa where usuario ='" + usuario + "' and senha ='" + senha + "'")
-        v = cursor.fetchall()
-        v = str(v)
-        v = v.replace("(", "")
-        v = v.replace(")", "")
-        v = v.replace(",", "")
-        v = v.replace("'", "")
-        if (v == "1"):
-            cursor.execute("UPDATE empresa SET usuario = '"+ usuario +"', senha = '"+ senha +"', nome = '"+ nome +"', numero = '"+ numero +"', endereco = '"+ endereco +"', bairro = '"+ bairro +"', telefone = '"+ telefone +"', cidade = '"+ cidade +"', uf = '"+ uf +"', credito = '"+ credito +"', debito = '"+ debito +"', dinheiro = '"+ dinheiro +"' where usuario ='"+ usuario +"'")
-            return {'status': 'sucesso'}
-        else:
-            return {'status': 'falha'}
+        cursor.execute("UPDATE empresa SET usuario = '"+ usuario +"', senha = '"+ senha +"', nome = '"+ nome +"', numero = '"+ numero +"', endereco = '"+ endereco +"', bairro = '"+ bairro +"', telefone = '"+ telefone +"', cidade = '"+ cidade +"', uf = '"+ uf +"', credito = '"+ credito +"', debito = '"+ debito +"', dinheiro = '"+ dinheiro +"' WHERE usuario ='"+usuariov+"' and senha ='"+senhav+"'")
+        c.commit()
+        c.close()
+        return {'status': 'sucesso'}
 
 class Empresas(Resource):
     def get(self, i=None):
@@ -349,6 +343,6 @@ api.add_resource(EmpresaPostandPut, '/empresaget/')
 api.add_resource(LoginC, '/cliente/login/')
 
 if __name__ == '__main__':
-    #port = int(os.environ.get("PORT", 5000))
-    #app.run(host='0.0.0.0', port=port)
-    app.run()
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
+    #app.run()
