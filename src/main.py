@@ -91,6 +91,55 @@ class EmpresaPostandPut(Resource):
             cursor.execute("SELECT usuario FROM empresa WHERE usuario = '" + usuario + "'")
             user = cursor.fetchall()
             user = clear.clear(user)
+            cursor.execute("SELECT hatendimentoi FROM empresa WHERE usuario = '" + usuario + "'")
+            hatendimentoi = cursor.fetchall()
+            hatendimentoi = clear.clear(hatendimentoi)
+            cursor.execute("SELECT hatendimentof FROM empresa WHERE usuario = '" + usuario + "'")
+            hatendimentof = cursor.fetchall()
+            hatendimentof = clear.clear(hatendimentof)
+            cursor.execute("SELECT segunda FROM empresa WHERE usuario = '" + usuario + "'")
+            segunda = cursor.fetchall()
+            segunda = clear.clear(segunda)
+            cursor.execute("SELECT quinta FROM empresa WHERE usuario = '" + usuario + "'")
+            quinta = cursor.fetchall()
+            quinta = clear.clear(quinta)
+            cursor.execute("SELECT domingo FROM empresa WHERE usuario = '" + usuario + "'")
+            domingo = cursor.fetchall()
+            domingo = clear.clear(domingo)
+            cursor.execute("SELECT terca FROM empresa WHERE usuario = '" + usuario + "'")
+            terca = cursor.fetchall()
+            terca = clear.clear(terca)
+            cursor.execute("SELECT sexta FROM empresa WHERE usuario = '" + usuario + "'")
+            sexta = cursor.fetchall()
+            sexta = clear.clear(sexta)
+            cursor.execute("SELECT quarta FROM empresa WHERE usuario = '" + usuario + "'")
+            quarta = cursor.fetchall()
+            quarta = clear.clear(quarta)
+            cursor.execute("SELECT sabado FROM empresa WHERE usuario = '" + usuario + "'")
+            sabado = cursor.fetchall()
+            sabado = clear.clear(sabado)
+            cursor.execute("SELECT fsemanaabres FROM empresa WHERE usuario = '" + usuario + "'")
+            fsemanaabres = cursor.fetchall()
+            fsemanaabres = clear.clear(fsemanaabres)
+            cursor.execute("SELECT fsemanafechas FROM empresa WHERE usuario = '" + usuario + "'")
+            fsemanafechas = cursor.fetchall()
+            fsemanafechas = clear.clear(fsemanafechas)
+            cursor.execute("SELECT fsemanaabred FROM empresa WHERE usuario = '" + usuario + "'")
+            fsemanaabred = cursor.fetchall()
+            fsemanaabred = clear.clear(fsemanaabred)
+            cursor.execute("SELECT fsemanafechad FROM empresa WHERE usuario = '" + usuario + "'")
+            fsemanafechad = cursor.fetchall()
+            fsemanafechad = clear.clear(fsemanafechad)
+            cursor.execute("SELECT feriado FROM empresa WHERE usuario = '" + usuario + "'")
+            feriado = cursor.fetchall()
+            feriado = clear.clear(feriado)
+            cursor.execute("SELECT feriadoa FROM empresa WHERE usuario = '" + usuario + "'")
+            feriadoa = cursor.fetchall()
+            feriadoa = clear.clear(feriadoa)
+            cursor.execute("SELECT feriadof FROM empresa WHERE usuario = '" + usuario + "'")
+            feriadof = cursor.fetchall()
+            feriadof = clear.clear(feriadof)
+
             response = {
                 'nome': name,
                 'cidade': cit,
@@ -103,6 +152,22 @@ class EmpresaPostandPut(Resource):
                 'usuario': user,
                 'debito': debito,
                 'dinheiro': dinheiro,
+                'hatendimentoi': hatendimentoi,
+                'hatendimentof': hatendimentof,
+                'segunda': segunda,
+                'quinta': quinta,
+                'domingo': domingo,
+                'terca': terca,
+                'sexta': sexta,
+                'quarta': quarta,
+                'sabado': sabado,
+                'fsemanaabres': fsemanaabres,
+                'fsemanafechas': fsemanafechas,
+                'fsemanaabred': fsemanaabred,
+                'fsemanafechad': fsemanafechad,
+                'feriado': feriado,
+                'feriadoa': feriadoa,
+                'feriadof': feriadof,
                 'status': 'sim'
             }
             return response
@@ -124,9 +189,25 @@ class EmpresaPostandPut(Resource):
         credito = dados['credito']
         debito = dados['debito']
         dinheiro = dados['dinheiro']
+        hatendimentoi = dados['hatendimentoi']
+        hatendimentof = dados['hatendimentof']
+        segunda = dados['segunda']
+        quinta = dados['quinta']
+        domingo = dados['domingo']
+        terca = dados['terca']
+        sexta = dados['sexta']
+        quarta = dados['quarta']
+        sabado = dados['sabado']
+        fsemanaabres = dados['fsemanaabres']
+        fsemanafechas = dados['fsemanafechas']
+        fsemanaabred = dados['fsemanaabred']
+        fsemanafechad = dados['fsemanafechad']
+        feriado = dados['feriado']
+        feriadoa = dados['feriadoa']
+        feriadof = dados['feriadof']
         c = server.conect(self)
         cursor = c.cursor()
-        cursor.execute("UPDATE empresa SET usuario = '"+ usuario +"', senha = '"+ senha +"', nome = '"+ nome +"', numero = '"+ numero +"', endereco = '"+ endereco +"', bairro = '"+ bairro +"', telefone = '"+ telefone +"', cidade = '"+ cidade +"', uf = '"+ uf +"', credito = '"+ credito +"', debito = '"+ debito +"', dinheiro = '"+ dinheiro +"' WHERE usuario ='"+usuariov+"' and senha ='"+senhav+"'")
+        cursor.execute("UPDATE empresa SET usuario = '"+ usuario +"', senha = '"+ senha +"', nome = '"+ nome +"', numero = '"+ numero +"', endereco = '"+ endereco +"', bairro = '"+ bairro +"', telefone = '"+ telefone +"', cidade = '"+ cidade +"', uf = '"+ uf +"', credito = '"+ credito +"', debito = '"+ debito +"', dinheiro = '"+ dinheiro +"', hatendimentoi = '"+hatendimentoi+"', hatendimentof = '"+hatendimentof+"', segunda = '"+segunda+"', quinta = '"+quinta+"', domingo = '"+domingo+"', terca = '"+terca+"', sexta = '"+sexta+"', quarta = '"+quarta+"', sabado = '"+sabado+"', fsemanaabres = '"+fsemanaabres+"', fsemanafechas = '"+fsemanafechas+"', fsemanaabred = '"+fsemanaabred+"', fsemanafechad = '"+fsemanafechad+"', feriado = '"+feriado+"', feriadoa = '"+feriadoa+"', feriadof = '"+feriadof+"' WHERE usuario ='"+usuariov+"' and senha ='"+senhav+"'")
         c.commit()
         c.close()
         return {'status': 'sucesso'}
@@ -159,7 +240,7 @@ class Empresas(Resource):
         segunda = dados['segunda']
         quinta = dados['quinta']
         domingo = dados['domingo']
-        terca = dados['terça']
+        terca = dados['terca']
         sexta = dados['sexta']
         quarta = dados['quarta']
         sabado = dados['sabado']
@@ -171,7 +252,7 @@ class Empresas(Resource):
         feriadoa = dados['feriadoa']
         feriadof = dados['feriadof']
         try:
-            com_sql = "INSERT INTO empresa(usuario,senha,nome,endereco,numero,bairro,telefone,cidade,uf,dinheiro,credito,debito,hatendimentoi,hatendimentof,segunda,quinta,domingo,terca,sexta,quarta,sabado,fsemanaabres,fsemanafechas,fsemanaabred,fsemanafechad,feriado,feriadoa,feriadof) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%i,%i,%s,%s,%s,%s,%s,%s,%s,%i,%i,%i,%i,%s,%i,%i)"
+            com_sql = "INSERT INTO empresa(usuario,senha,nome,endereco,numero,bairro,telefone,cidade,uf,dinheiro,credito,debito,hatendimentoi,hatendimentof,segunda,quinta,domingo,terca,sexta,quarta,sabado,fsemanaabres,fsemanafechas,fsemanaabred,fsemanafechad,feriado,feriadoa,feriadof) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
             valor = (usuario, senha, nome, endereco, numero, bairro, telefone , cidade, uf, dinheiro, credito, debito, hatendimentoi, hatendimentof, segunda, quinta, domingo, terca, sexta, quarta, sabado, fsemanaabres, fsemanafechas, fsemanaabred, fsemanafechad, feriado, feriadoa, feriadof)
             c = server.conect(self)
             cursor = c.cursor()
@@ -220,6 +301,10 @@ class Empresa_infos(Resource):
             cursor.execute("SELECT dinheiro FROM empresa WHERE nome = '" + nome + "'")
             dinheiro = cursor.fetchall()
             dinheiro = clear.clear(dinheiro)
+            cursor.execute("SELECT id_empresa FROM empresa WHERE nome = '" + nome + "'")
+            id = cursor.fetchall()
+            id = clear.clear(id)
+
 
             response = {
                 'nome':name,
@@ -231,11 +316,77 @@ class Empresa_infos(Resource):
                 'uf':uf,
                 'credito':credito,
                 'debito':debito,
-                'dinheiro':dinheiro
+                'dinheiro':dinheiro,
+                'id': id
             }
             return response
         except AttributeError:
             return{'status':'error','menssagem':AttributeError}
+
+class ServicoGet(Resource):
+    def post(self):
+        dados = request.json
+        id = dados['id']
+        c = server.conect(self)
+        cursor = c.cursor()
+        cursor.execute("SELECT nome FROM servicos WHERE id_empresa = " + str(id) + "")
+        nome = cursor.fetchall()
+        nome = clear.clear(nome)
+        cursor.execute("SELECT preco FROM servicos WHERE id_empresa = " + str(id) + "")
+        preco = cursor.fetchall()
+        preco = clear.clear(preco)
+        cursor.execute("SELECT horario FROM servicos WHERE id_empresa = " + str(id) + "")
+        horario = cursor.fetchall()
+        horario = clear.clear(horario)
+
+        return {'nome': nome,'preco': preco,'horario': horario}
+
+class Servicos(Resource):
+    def post(self):
+        dados = request.json
+        nome = dados['nome']
+        preco = dados['preco']
+        horario = dados['horario']
+        id_empresa = dados['id_empresa']
+
+        try:
+            com_sql = "INSERT INTO servicos(nome,preco,horario,id_empresa) VALUES (%s,%s,%s,%s)"
+            valor = (nome, preco, horario, int(id_empresa))
+            c = server.conect(self)
+            cursor = c.cursor()
+            cursor.execute(com_sql, valor)
+            c.commit()
+            c.close()
+            return {'status': 'sucesso'}
+        except AttributeError:
+            return {
+                'status': 'error',
+                'mensagem': AttributeError
+            }
+
+    def put(self):
+        dados = request.json
+        nome = dados['nome']
+        preco = dados['preco']
+        horario = dados['horario']
+        id_empresa = dados['id_empresa']
+        c = server.conect(self)
+        cursor = c.cursor()
+        cursor.execute("UPDATE servicos SET nome = '"+ nome +"', preco = '"+ preco +"', horario = '"+ horario+"' WHERE id_empresa = "+str(id_empresa)+"")
+        c.commit()
+        c.close()
+        return {'status': 'sucesso'}
+
+    def delete(self):
+        dados = request.json
+        id = dados['id']
+        c = server.conect(self)
+        cursor = c.cursor()
+        cursor.execute("DELETE FROM servicos WHERE id_servicos = "+str(id)+"")
+        c.commit()
+        c.close()
+        return {'status': 'sucesso'}
+
 
 class Clientes(Resource):
 
@@ -271,8 +422,10 @@ api.add_resource(Empresas, '/empresas/')
 api.add_resource(Clientes, '/clientes/')
 api.add_resource(EmpresaPostandPut, '/empresaget/')
 api.add_resource(LoginC, '/cliente/login/')
+api.add_resource(Servicos, '/servicos/')
+api.add_resource(ServicoGet, '/servicoget/')
 
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
-    #app.run()
+    #port = int(os.environ.get("PORT", 5000))
+    #app.run(host='0.0.0.0', port=port)
+    app.run()
