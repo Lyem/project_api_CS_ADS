@@ -154,9 +154,25 @@ class Empresas(Resource):
         dinheiro = dados['dinheiro']
         credito = dados['credito']
         debito = dados['debito']
+        hatendimentoi = dados['hatendimentoi']
+        hatendimentof = dados['hatendimentof']
+        segunda = dados['segunda']
+        quinta = dados['quinta']
+        domingo = dados['domingo']
+        terca = dados['terça']
+        sexta = dados['sexta']
+        quarta = dados['quarta']
+        sabado = dados['sabado']
+        fsemanaabres = dados['fsemanaabres']
+        fsemanafechas = dados['fsemanafechas']
+        fsemanaabred = dados['fsemanaabred']
+        fsemanafechad = dados['fsemanafechad']
+        feriado = dados['feriado']
+        feriadoa = dados['feriadoa']
+        feriadof = dados['feriadof']
         try:
-            com_sql = "INSERT INTO empresa(usuario,senha,nome,endereco,numero,bairro,telefone,cidade,uf,dinheiro,credito,debito) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-            valor = (usuario, senha, nome, endereco, numero, bairro, telefone , cidade, uf, dinheiro, credito, debito)
+            com_sql = "INSERT INTO empresa(usuario,senha,nome,endereco,numero,bairro,telefone,cidade,uf,dinheiro,credito,debito,hatendimentoi,hatendimentof,segunda,quinta,domingo,terca,sexta,quarta,sabado,fsemanaabres,fsemanafechas,fsemanaabred,fsemanafechad,feriado,feriadoa,feriadof) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%i,%i,%s,%s,%s,%s,%s,%s,%s,%i,%i,%i,%i,%s,%i,%i)"
+            valor = (usuario, senha, nome, endereco, numero, bairro, telefone , cidade, uf, dinheiro, credito, debito, hatendimentoi, hatendimentof, segunda, quinta, domingo, terca, sexta, quarta, sabado, fsemanaabres, fsemanafechas, fsemanaabred, fsemanafechad, feriado, feriadoa, feriadof)
             c = server.conect(self)
             cursor = c.cursor()
             cursor.execute(com_sql, valor)
