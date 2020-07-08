@@ -272,8 +272,10 @@ class Empresas(Resource):
             }
 
 class Empresa_infos(Resource):
-    def get(self, nome):
+    def post(self):
         try:
+            dados = request.json
+            nome = dados['nome']
             c = server.conect(self)
             cursor = c.cursor()
             cursor.execute("SELECT nome FROM empresa WHERE nome = '" + nome + "'")
@@ -493,7 +495,7 @@ class Detalhe(Resource):
             }
 
 api.add_resource(On, '/')
-api.add_resource(Empresa_infos, '/empresa/<string:nome>/')
+api.add_resource(Empresa_infos, '/empresa/')
 api.add_resource(Empresas, '/empresas/')
 api.add_resource(Clientes, '/clientes/')
 api.add_resource(EmpresaPostandPut, '/empresaget/')

@@ -1,10 +1,10 @@
 import pymysql
 
 conexao = pymysql.connect(
-    host='btgbkaailupqd9xx9ggq-mysql.services.clever-cloud.com',
-    user='uxrmw1j97dytoizi',
-    passwd='SNjQgsVMcs5x0GctKN70',
-    database='btgbkaailupqd9xx9ggq'
+    host='',
+    user='',
+    passwd='',
+    database=''
 )
 cursor = conexao.cursor()
 
