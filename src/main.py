@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 from flask import Flask, request
 from flask_restful import Resource, Api
 import pymysql
@@ -139,6 +140,9 @@ class EmpresaPostandPut(Resource):
             cursor.execute("SELECT feriadof FROM empresa WHERE usuario = '" + usuario + "'")
             feriadof = cursor.fetchall()
             feriadof = clear.clear(feriadof)
+            cursor.execute("SELECT id_empresa FROM empresa WHERE usuario = '" + usuario + "'")
+            id = cursor.fetchall()
+            id = clear.clear(id)
 
             response = {
                 'nome': name,
@@ -168,6 +172,7 @@ class EmpresaPostandPut(Resource):
                 'feriado': feriado,
                 'feriadoa': feriadoa,
                 'feriadof': feriadof,
+                'id': id,
                 'status': 'sim'
             }
             return response
@@ -416,6 +421,77 @@ class Clientes(Resource):
                 'mensagem': AttributeError
             }
 
+class Calendarioempresa(Resource):
+    def post(self):
+        dados = request.json
+        usuario = dados['usuario']
+        senha = dados['senha']
+        idpessoal = dados['idpessoal']
+        data = dados['data']
+        c = server.conect(self)
+        cursor = c.cursor()
+        cursor.execute("select count(*) from empresa where usuario ='" + usuario + "' and senha ='" + senha + "'")
+        v = cursor.fetchall()
+        v = clear.clear(v)
+        if (v == "1"):
+            data = datetime.strptime(data, '%d/%m/%Y').date()
+            cursor.execute("SELECT clientes.nome FROM clientes INNER JOIN pedido ON clientes.id_clientes = pedido.id_clientes INNER JOIN detalhes ON pedido.id_pedido = detalhes.id_pedido INNER JOIN servicos ON detalhes.id_servicos = servicos.id_servicos WHERE pedido.id_empresa = "+str(idpessoal)+" AND pedido.data = '"+str(data)+"' ORDER BY clientes.nome;")
+            nomecliente = cursor.fetchall()
+            nomecliente = clear.clear(nomecliente)
+            cursor.execute("SELECT pedido.horarioinicio FROM clientes INNER JOIN pedido ON clientes.id_clientes = pedido.id_clientes INNER JOIN detalhes ON pedido.id_pedido = detalhes.id_pedido INNER JOIN servicos ON detalhes.id_servicos = servicos.id_servicos WHERE pedido.id_empresa = " + str(idpessoal) + " AND pedido.data = '" + str(data) + "' ORDER BY clientes.nome;")
+            horarioinicio = cursor.fetchall()
+            horarioinicio = clear.clear(horarioinicio)
+            cursor.execute("SELECT servicos.nome FROM clientes INNER JOIN pedido ON clientes.id_clientes = pedido.id_clientes INNER JOIN detalhes ON pedido.id_pedido = detalhes.id_pedido INNER JOIN servicos ON detalhes.id_servicos = servicos.id_servicos WHERE pedido.id_empresa = " + str(idpessoal) + " AND pedido.data = '" + str(data) + "' ORDER BY clientes.nome;")
+            servico = cursor.fetchall()
+            servico = clear.clear(servico)
+            cursor.close()
+            return {"cliente": nomecliente, "horariodeinicio": horarioinicio, "nomeservico": servico}
+
+
+
+class Pedido(Resource):
+    def post(self):
+        dados = request.json
+        data = dados['data']
+        data = datetime.strptime(data, '%d/%m/%Y').date()
+        horarioinicio = dados['horarioinicio']
+        id_clientes = dados['id_clientes']
+        id_empresa = dados['id_empresa']
+        try:
+            com_sql = "INSERT INTO pedido(data, horarioinicio, id_clientes, id_empresa) VALUES (%s,%s,%s,%s)"
+            valor = (data, horarioinicio, id_clientes, id_empresa)
+            c = server.conect(self)
+            cursor = c.cursor()
+            cursor.execute(com_sql, valor)
+            c.commit()
+            c.close()
+            return {'status':'sucesso'}
+        except AttributeError:
+            return{
+                'status':'error',
+                'mensagem': AttributeError
+            }
+
+class Detalhe(Resource):
+    def post(self):
+        dados = request.json
+        id_pedido = dados['id_pedido']
+        id_servicos = dados['id_servicos']
+        try:
+            com_sql = "INSERT INTO detalhes(id_pedido, id_servicos) VALUES (%s,%s)"
+            valor = (id_pedido, id_servicos)
+            c = server.conect(self)
+            cursor = c.cursor()
+            cursor.execute(com_sql, valor)
+            c.commit()
+            c.close()
+            return {'status':'sucesso'}
+        except AttributeError:
+            return{
+                'status':'error',
+                'mensagem': AttributeError
+            }
+
 api.add_resource(On, '/')
 api.add_resource(Empresa_infos, '/empresa/<string:nome>/')
 api.add_resource(Empresas, '/empresas/')
@@ -424,8 +500,11 @@ api.add_resource(EmpresaPostandPut, '/empresaget/')
 api.add_resource(LoginC, '/cliente/login/')
 api.add_resource(Servicos, '/servicos/')
 api.add_resource(ServicoGet, '/servicoget/')
+api.add_resource(Pedido, '/cliente/')
+api.add_resource(Detalhe, '/detalhe/')
+api.add_resource(Calendarioempresa, '/calendario/')
 
 if __name__ == '__main__':
-    #port = int(os.environ.get("PORT", 5000))
-    #app.run(host='0.0.0.0', port=port)
-    app.run()
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
+    #app.run()
