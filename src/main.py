@@ -345,7 +345,7 @@ class ServicoGet(Resource):
         cursor.execute("SELECT horario FROM servicos WHERE id_empresa = " + str(id) + "")
         horario = cursor.fetchall()
         horario = clear.clear(horario)
-        cursor.execute("SELECT id FROM servicos WHERE id_empresa = " + str(id) + "")
+        cursor.execute("SELECT id_servicos FROM servicos WHERE id_empresa = " + str(id) + "")
         idd = cursor.fetchall()
         idd = clear.clear(idd)
 
