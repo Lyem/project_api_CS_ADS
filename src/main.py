@@ -44,7 +44,14 @@ class LoginC(Resource):
         v = cursor.fetchall()
         v = clear.clear(v)
         if (v == "1"):
-            return {'status':'sim'}
+            cursor.execute("select id_clientes from clientes where usuario ='" + usuario + "' and senha ='" + senha + "'")
+            id = cursor.fetchall()
+            id = clear.clear(id)
+            response = {
+                'id': id,
+                'status': 'sim'
+            }
+            return response
         else:
             return {'status':'nao'}
 
