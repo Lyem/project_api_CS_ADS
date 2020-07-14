@@ -345,8 +345,11 @@ class ServicoGet(Resource):
         cursor.execute("SELECT horario FROM servicos WHERE id_empresa = " + str(id) + "")
         horario = cursor.fetchall()
         horario = clear.clear(horario)
+        cursor.execute("SELECT id FROM servicos WHERE id_empresa = " + str(id) + "")
+        idd = cursor.fetchall()
+        idd = clear.clear(idd)
 
-        return {'nome': nome,'preco': preco,'horario': horario}
+        return {'nome': nome,'preco': preco,'horario': horario,'id': idd}
 
     def put(self):
         dados = request.json
@@ -505,6 +508,6 @@ api.add_resource(Pedido, '/cliente/')
 api.add_resource(Calendarioempresa, '/calendario/')
 
 if __name__ == '__main__':
-    '''port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)'''
-    app.run()
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
+    #app.run()
