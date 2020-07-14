@@ -405,9 +405,10 @@ class Servicos(Resource):
         preco = dados['preco']
         horario = dados['horario']
         id_empresa = dados['id_empresa']
+        id_servico = dados['id_servico']
         c = server.conect(self)
         cursor = c.cursor()
-        cursor.execute("UPDATE servicos SET nome = '"+ nome +"', preco = '"+ preco +"', horario = '"+ horario+"' WHERE id_empresa = "+str(id_empresa)+"")
+        cursor.execute("UPDATE servicos SET nome = '"+ nome +"', preco = '"+ preco +"', horario = '"+ horario+"' WHERE id_empresa = "+str(id_empresa)+" and id_servicos = "+str(id_servico)+"")
         c.commit()
         c.close()
         return {'status': 'sucesso'}
